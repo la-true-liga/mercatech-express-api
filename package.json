@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "babel": "babel src --out-dir build --extensions '.ts'",
-    "build": "babel src --out-dir build --extensions '.ts'",
+    "build": "npm run babel",
     "dev": "nodemon --exec npm run babel src/index.ts",
     "start": "node build/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
