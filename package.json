@@ -5,9 +5,9 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "babel-node": "babel-node --presets=@babel/preset-env --extensions '.ts'",
-    "build": "babel src --out-dir build --extensions '.ts'",
-    "dev": "nodemon --exec npm run babel-node src/index.ts",
+    "babel": "babel src --out-dir build --extensions '.ts'",
+    "build": "npm run babel",
+    "dev": "nodemon --exec npm run babel src/index.ts",
     "start": "node build/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
