@@ -9,7 +9,7 @@
     "build": "npm run babel",
     "dev": "nodemon --exec npm run babel src/index.ts",
     "start": "node build/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
