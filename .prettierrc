@@ -3,5 +3,12 @@
     "trailingComma": "all",
     "singleQuote": true,
     "printWidth": 120,
-    "tabWidth": 2
+    "useTabs": true,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "bracketSameLine": true,
+    "arrowParens": "always",
+    "parser": "typescript",
+    "endOfLine": "crlf",
+    "embeddedLanguageFormatting": "off"
 }
