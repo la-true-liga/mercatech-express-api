@@ -1,21 +1,33 @@
 {
   "compilerOptions":
   {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": false,
-    "resolveJsonModule": true,
+    "module": "esnext",
     "esModuleInterop": true,
-    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
+    "target": "esnext",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "importHelpers": true,
+    "outDir": "build",
+    "baseUrl": ".",
+    "strict": true,
     "noEmit": true,
+    "useDefineForClassFields": true,  
+    "lib": ["esnext", "dom"],
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
   },
-  "include": ["src/*.ts"],
-  "exclude": ["node_modules", "dist", "vite"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build"]
 }
