@@ -12,6 +12,7 @@
     "format": "eslint src/**/*.ts --fix",
     "prisma-init": "npx prisma init --datasource-provider mysql",
     "prisma-dbpull": "npx prisma db pull",
+    "prisma-migrate": "npx prisma migrate dev",
     "prisma-generate": "npx prisma generate",
     "prisma-studio": "npx prisma studio"
   },
