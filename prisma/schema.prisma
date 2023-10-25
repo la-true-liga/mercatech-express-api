@@ -8,6 +8,62 @@ datasource db {
 }
 
 model item {
-  itemId Int @id @unique(map: "itemId_UNIQUE") @db.UnsignedInt
-  name   String @unique
+  itemId    Int           @id @unique(map: "itemId_UNIQUE") @db.UnsignedInt
+  name      String        @unique(map: "name") @db.VarChar(30)
+  category  item_category @default(OTROS)
+  list_item list_item[]
+}
+
+model list {
+  listId                          Int         @id @unique(map: "listId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name                            String      @default("Lista") @db.VarChar(35)
+  type                            list_type   @default(CUSTOM)
+  compra_userId                   Int         @db.UnsignedInt
+  despensa_userId                 Int         @db.UnsignedInt
+  custom_userId                   Int         @db.UnsignedInt
+  user_list_compra_userIdTouser   user        @relation("list_compra_userIdTouser", fields: [compra_userId], references: [userId], onDelete: Cascade, map: "fk_list_user")
+  user_list_despensa_userIdTouser user        @relation("list_despensa_userIdTouser", fields: [despensa_userId], references: [userId], onDelete: Cascade, map: "fk_list_user1")
+  user_list_custom_userIdTouser   user        @relation("list_custom_userIdTouser", fields: [custom_userId], references: [userId], onDelete: Cascade, map: "fk_list_user2")
+  list_item                       list_item[]
+
+  @@index([despensa_userId], map: "fk_list_user1_idx")
+  @@index([custom_userId], map: "fk_list_user2_idx")
+  @@index([compra_userId], map: "fk_list_user_idx")
+}
+
+model list_item {
+  list_item_listId Int  @db.UnsignedInt
+  list_item_itemId Int  @db.UnsignedInt
+  item             item @relation(fields: [list_item_itemId], references: [itemId], onDelete: Cascade, map: "fk_list_has_item_item1")
+  list             list @relation(fields: [list_item_listId], references: [listId], onDelete: Cascade, map: "fk_list_has_item_list1")
+
+  @@id([list_item_listId, list_item_itemId])
+  @@index([list_item_itemId], map: "fk_list_has_item_item1_idx")
+  @@index([list_item_listId], map: "fk_list_has_item_list1_idx")
+}
+
+model user {
+  userId                          Int    @id @unique(map: "userId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  nickname                        String @db.VarChar(50)
+  email                           String @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password                        String @db.MediumText
+  list_list_compra_userIdTouser   list[] @relation("list_compra_userIdTouser")
+  list_list_despensa_userIdTouser list[] @relation("list_despensa_userIdTouser")
+  list_list_custom_userIdTouser   list[] @relation("list_custom_userIdTouser")
+}
+
+enum list_type {
+  COMPRA
+  DESPENSA
+  CUSTOM
+}
+
+enum item_category {
+  CARNE
+  PESCADO
+  VERDURA
+  FRUTA
+  LACTEOS
+  DULCE
+  OTROS
 }
