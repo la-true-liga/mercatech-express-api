@@ -1,9 +1,83 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" },
-    "extends": ["plugin:@typescript-eslint/recommended"],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:node/recommended",
+        "plugin:promise/recommended",
+        "plugin:security/recommended",
+        "plugin:sonarjs/recommended"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "import",
+        "node",
+        "promise",
+        "security",
+        "sonarjs"
+    ],
     "env": {
         "node": true
+    },
+    "rules": {
+        "no-console": "off",
+        "no-process-exit": "error",
+        "no-restricted-modules": ["error", "fs", "http", "https", "child_process"],
+        "no-restricted-syntax": [
+            "error",
+            {
+                "selector": "CallExpression[callee.object.name='console'][callee.property.name=/^(log|debug|warn|error|trace)$/]",
+                "message": "Unexpected property on console object was called"
+            }
+        ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "import/order": [
+            "error",
+            {
+                "alphabetize": { "order": "asc" },
+                "newlines-between": "always",
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index"
+                ]
+            }
+        ],
+        "node/no-missing-import": "off",
+        "node/no-unsupported-features/es-syntax": "off",
+        "node/shebang": "off",
+        "promise/always-return": "off",
+        "promise/catch-or-return": "error",
+        "promise/no-nesting": "warn",
+        "security/detect-object-injection": "off",
+        "sonarjs/cognitive-complexity": ["error", 20],
+        "sonarjs/no-duplicate-string": "off",
+        "sonarjs/no-identical-functions": "off",
+        "sonarjs/no-redundant-jump": "error",
+        "sonarjs/no-small-switch": "off",
+        "sonarjs/no-unused-collection": "error",
+        "sonarjs/no-use-of-empty-return-value": "error",
+        "sonarjs/prefer-immediate-return": "error",
+        "sonarjs/prefer-object-literal": "error",
+        "sonarjs/prefer-single-boolean-return": "error",
+        "sonarjs/prefer-while": "error",
+        "node/no-unpublished-import": [
+            "error",
+            {
+                "allowModules": ["morgan"]
+            }
+        ]
     }
 }
