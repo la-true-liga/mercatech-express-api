@@ -1,33 +1,49 @@
 {
-  "compilerOptions":
-  {
-    "module": "esnext",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
+  "compilerOptions": {
     "target": "esnext",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "importHelpers": true,
-    "outDir": "build",
-    "baseUrl": ".",
-    "strict": true,
-    "noEmit": true,
-    "useDefineForClassFields": true,  
+    "module": "esnext",
     "lib": ["esnext", "dom"],
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
       "*": [
-        "node_modules/*"
+        "src/*"
       ]
-    }
+    },
+    "outDir": "build",
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "build"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

@@ -3,12 +3,17 @@
     "trailingComma": "all",
     "singleQuote": true,
     "printWidth": 120,
-    "useTabs": true,
     "tabWidth": 2,
-    "bracketSpacing": true,
-    "bracketSameLine": true,
     "arrowParens": "always",
-    "parser": "typescript",
-    "endOfLine": "crlf",
-    "embeddedLanguageFormatting": "off"
+    "endOfLine": "auto",
+    "overrides": [
+        {
+            "files": "*.ts",
+            "options": {
+                "parser": "typescript",
+                "useTabs": true,
+                "jsxSingleQuote": true
+            }
+        }
+    ]
 }

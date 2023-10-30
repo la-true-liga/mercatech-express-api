@@ -8,7 +8,7 @@ datasource db {
 }
 
 model item {
-  itemId    Int           @id @unique(map: "itemId_UNIQUE") @db.UnsignedInt
+  itemId    Int           @id @unique(map: "itemId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   name      String        @unique(map: "name") @db.VarChar(30)
   category  item_category @default(OTHERS)
   list_item list_item[]
@@ -18,9 +18,9 @@ model list {
   listId                          Int         @id @unique(map: "listId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   name                            String      @default("Lista") @db.VarChar(35)
   type                            list_type   @default(CUSTOM)
-  shopping_userId                 Int         @unique(map: "shopping_userId_UNIQUE") @db.UnsignedInt
-  pantry_userId                   Int         @unique(map: "pantry_userId_UNIQUE") @db.UnsignedInt
   custom_userId                   Int         @db.UnsignedInt
+  pantry_userId                   Int         @unique(map: "pantry_userId_UNIQUE") @db.UnsignedInt
+  shopping_userId                 Int         @unique(map: "shopping_userId_UNIQUE") @db.UnsignedInt
   user_list_custom_userIdTouser   user        @relation("list_custom_userIdTouser", fields: [custom_userId], references: [userId], onDelete: Cascade, map: "fk_list_user2")
   user_list_pantry_userIdTouser   user        @relation("list_pantry_userIdTouser", fields: [pantry_userId], references: [userId], onDelete: Cascade, map: "fk_pantry_list")
   user_list_shopping_userIdTouser user        @relation("list_shopping_userIdTouser", fields: [shopping_userId], references: [userId], onDelete: Cascade, map: "fk_shopping_list")
