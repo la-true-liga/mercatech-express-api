@@ -1,3 +1,18 @@
-node_modules
-build
-.vscode/*
+# Compiled output
+dist/
+build/
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# MySQL Workbench files
+*.mwb

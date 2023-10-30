@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model item {
+  itemId    Int           @id @unique(map: "itemId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name      String        @unique(map: "name") @db.VarChar(30)
+  category  item_category @default(OTHERS)
+  list_item list_item[]
+}
+
+model list {
+  listId                          Int         @id @unique(map: "listId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name                            String      @default("Lista") @db.VarChar(35)
+  type                            list_type   @default(CUSTOM)
+  custom_userId                   Int         @db.UnsignedInt
+  pantry_userId                   Int         @unique(map: "pantry_userId_UNIQUE") @db.UnsignedInt
+  shopping_userId                 Int         @unique(map: "shopping_userId_UNIQUE") @db.UnsignedInt
+  user_list_custom_userIdTouser   user        @relation("list_custom_userIdTouser", fields: [custom_userId], references: [userId], onDelete: Cascade, map: "fk_list_user2")
+  user_list_pantry_userIdTouser   user        @relation("list_pantry_userIdTouser", fields: [pantry_userId], references: [userId], onDelete: Cascade, map: "fk_pantry_list")
+  user_list_shopping_userIdTouser user        @relation("list_shopping_userIdTouser", fields: [shopping_userId], references: [userId], onDelete: Cascade, map: "fk_shopping_list")
+  list_item                       list_item[]
+
+  @@index([pantry_userId], map: "fk_list_user1_idx")
+  @@index([custom_userId], map: "fk_list_user2_idx")
+  @@index([shopping_userId], map: "fk_list_user_idx")
+}
+
+model list_item {
+  list_item_listId Int                    @db.UnsignedInt
+  list_item_itemId Int                    @db.UnsignedInt
+  quantity         Int
+  quantityType     list_item_quantityType @default(UNITS)
+  item             item                   @relation(fields: [list_item_itemId], references: [itemId], onDelete: Cascade, map: "fk_list_has_item_item1")
+  list             list                   @relation(fields: [list_item_listId], references: [listId], onDelete: Cascade, map: "fk_list_has_item_list1")
+
+  @@id([list_item_listId, list_item_itemId])
+  @@index([list_item_itemId], map: "fk_list_has_item_item1_idx")
+  @@index([list_item_listId], map: "fk_list_has_item_list1_idx")
+}
+
+model user {
+  userId                          Int    @id @unique(map: "userId_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  nickname                        String @db.VarChar(50)
+  email                           String @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password                        String @db.MediumText
+  list_list_custom_userIdTouser   list[] @relation("list_custom_userIdTouser")
+  list_list_pantry_userIdTouser   list?  @relation("list_pantry_userIdTouser")
+  list_list_shopping_userIdTouser list?  @relation("list_shopping_userIdTouser")
+}
+
+enum item_category {
+  MEAT
+  FISH
+  VEGETABLES
+  FRUITS
+  DAIRY
+  SWEETS
+  OTHERS
+}
+
+enum list_type {
+  SHOPPING
+  PANTRY
+  CUSTOM
+}
+
+enum list_item_quantityType {
+  ML
+  L
+  G
+  KG
+  UNITS
+}

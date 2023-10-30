@@ -1,21 +1,49 @@
 {
-  "compilerOptions":
-  {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": false,
-    "resolveJsonModule": true,
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom"],
+    "strict": true,
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "src/*"
+      ]
+    },
+    "outDir": "build",
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
-  "include": ["src/*.ts"],
-  "exclude": ["node_modules", "dist", "vite"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }
