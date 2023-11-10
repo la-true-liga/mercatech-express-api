@@ -45,7 +45,6 @@ const getItems = async (req: Request, res: Response): Promise<void> => {
     
     try {
         let items: Item[] = [];
-        if (page === undefined)
 
         if (name === undefined && category === undefined)
             items = await prisma.item.findMany({
