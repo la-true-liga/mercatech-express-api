@@ -38,18 +38,43 @@ const createItem = async (req: Request, res: Response): Promise<void> => {
  * @returns Promise that resolves to void.
  */
 const getItems = async (req: Request, res: Response): Promise<void> => {
+    const { page } = req.params;
     const {name, category} = req.query;
-
+    
+    const elements: number = 10;
+    
     try {
         let items: Item[] = [];
+        if (page === undefined)
+
         if (name === undefined && category === undefined)
-            items = await prisma.item.findMany();
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                orderBy: {name: 'asc'}
+            });
         else if (name !== undefined && category !== undefined)
-            items = await prisma.item.findMany({ where: { name: String(name), category: item_category[category as keyof typeof item_category] } });
-        else if (category !== undefined && Object.values(item_category).includes(item_category[category as keyof typeof item_category]))
-            items = await prisma.item.findMany({ where: { category: item_category[category as keyof typeof item_category] } });
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { name: String(name), category: item_category[category as keyof typeof item_category] },
+                orderBy: {name: 'asc'}
+            });
+        else if (category !== undefined
+                    && Object.values(item_category).includes(item_category[category as keyof typeof item_category]))
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { category: item_category[category as keyof typeof item_category] },
+                orderBy: {name: 'asc'}
+            });
         else
-            items = await prisma.item.findMany({ where: { name: String(name) } });
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { name: String(name) },
+                orderBy: {name: 'asc'}
+            });
         res.json(items);
     } catch (error) {
         res.status(500).json({ error: 'Error getting items' });
