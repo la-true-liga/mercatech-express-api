@@ -14,9 +14,9 @@ const createItem = async (req: Request, res: Response): Promise<void> => {
     const { name, category } : {name: string, category: item_category} = req.body;
     
     try {
-        if (name === undefined || category === undefined)
+        if (name === undefined)
         {
-            res.status(400).json({ error: 'Missing name or category' });
+            res.status(400).json({ error: 'Missing item name' });
             return;
         }
         const item: Item = await prisma.item.create({
@@ -38,8 +38,7 @@ const createItem = async (req: Request, res: Response): Promise<void> => {
  * @returns Promise that resolves to void.
  */
 const getItems = async (req: Request, res: Response): Promise<void> => {
-    const { page } = req.params;
-    const {name, category} = req.query;
+    const {name, category, page} = req.query;
     
     const elements: number = 10;
     
@@ -92,7 +91,7 @@ const updateItem = async (req: Request, res: Response) : Promise<void> => {
 
     try {
 
-        if (id == undefined)
+        if (id === undefined)
         {
             res.status(400).json({ error: 'Missing item ID' });
             return;
