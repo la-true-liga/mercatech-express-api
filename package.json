@@ -1,6 +1,6 @@
 {
   "name": "mercatech-rest-api",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "description": "API Rest para la aplicación MercaTech",
   "main": "index.ts",
   "scripts": {
