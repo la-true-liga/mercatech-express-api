@@ -16,7 +16,8 @@ services:
     networks:
       - test_vm
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   database:
     image: mysql:5.7
@@ -30,6 +31,10 @@ services:
       - 3306
     networks:
       - test_vm
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 volumes:
   database:
 networks:
