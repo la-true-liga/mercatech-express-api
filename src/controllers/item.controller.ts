@@ -123,12 +123,12 @@ const updateItem = async (req: Request, res: Response) : Promise<void> => {
  */
 const deleteItem = async (req: Request, res: Response) : Promise<void> => {
     const { id } = req.params;
-    if (id === undefined)
-    {
-        res.status(400).json({ error: 'Missing item ID' });
-        return;
-    }
     try {
+        if (id === undefined)
+        {
+            res.status(400).json({ error: 'Missing item ID' });
+            return;
+        }
         await prisma.item.delete({ where: { itemId: Number(id) } });
         res.json({ message: 'Item deleted successfully' });
     } catch (error) {
