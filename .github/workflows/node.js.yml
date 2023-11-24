@@ -43,7 +43,7 @@ jobs:
       run: docker-compose -f docker-compose.test.yml build --no-cache
     
     - name: Apply migrations for DB
-      run: docker-compose -f docker-compose.test.yml run --rm server yarn prisma migrate up --experimental --create-db --auto-approve
+      run: docker-compose -f docker-compose.test.yml run --rm server yarn prisma migrate deploy --experimental --create-db --auto-approve
 
     - name: Run tests
       run: docker-compose -f docker-compose.test.yml run --rm server yarn jest -i
