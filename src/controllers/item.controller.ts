@@ -1,6 +1,8 @@
+import { item_category } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import prisma from '../database';
+import { Item, ItemController } from '../interfaces/item.interfaces';
 
 /**
  * Creates a new item with the given name and category.
@@ -9,12 +11,18 @@ import prisma from '../database';
  * @returns The created item.
  */
 const createItem = async (req: Request, res: Response): Promise<void> => {
-    const { name, category } = req.body;
+    const { name, category } : {name: string, category: item_category} = req.body;
+    
     try {
-        const item = await prisma.item.create({
+        if (name === undefined)
+        {
+            res.status(400).json({ error: 'Missing item name' });
+            return;
+        }
+        const item: Item = await prisma.item.create({
             data: {
-                name,
-                category
+                name: name,
+                category: category
             },
         });
         res.json(item);
@@ -25,35 +33,49 @@ const createItem = async (req: Request, res: Response): Promise<void> => {
 
 /**
  * Retrieves all items from the database.
- * @param _req - The request object.
+ * @param req - The request object.
  * @param res - The response object.
  * @returns Promise that resolves to void.
  */
-const getItems = async (_req: Request, res: Response): Promise<void> => {
+const getItems = async (req: Request, res: Response): Promise<void> => {
+    const {name, category, page} = req.query;
+    
+    const elements: number = 10;
+    
     try {
-        const items = await prisma.item.findMany();
+        let items: Item[] = [];
+
+        if (name === undefined && category === undefined)
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                orderBy: {name: 'asc'}
+            });
+        else if (name !== undefined && category !== undefined)
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { name: String(name), category: item_category[category as keyof typeof item_category] },
+                orderBy: {name: 'asc'}
+            });
+        else if (category !== undefined
+                    && Object.values(item_category).includes(item_category[category as keyof typeof item_category]))
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { category: item_category[category as keyof typeof item_category] },
+                orderBy: {name: 'asc'}
+            });
+        else
+            items = await prisma.item.findMany({
+                skip: elements * (Number(page) || 0),
+                take: elements,
+                where: { name: String(name) },
+                orderBy: {name: 'asc'}
+            });
         res.json(items);
     } catch (error) {
         res.status(500).json({ error: 'Error getting items' });
-    }
-};
-
-/**
- * Retrieves an item by its ID.
- * @param req - The request object.
- * @param res - The response object.
- * @returns The item object if found, or an error message if not found or an error occurred.
- */
-const getItemById = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-    try {
-        const item = await prisma.item.findUnique({ where: { itemId: Number(id) } });
-        if (!item)
-            res.status(404).json({ error: 'Item not found' });
-        else
-            res.json(item);
-    } catch (error) {
-        res.status(500).json({ error: 'Error getting item' });
     }
 };
 
@@ -65,9 +87,22 @@ const getItemById = async (req: Request, res: Response): Promise<void> => {
  */
 const updateItem = async (req: Request, res: Response) : Promise<void> => {
     const { id } = req.params;
-    const { name, category } = req.body;
+    const { name, category } : {name: string, category: item_category} = req.body;
+
     try {
-        const item = await prisma.item.update({
+
+        if (id === undefined)
+        {
+            res.status(400).json({ error: 'Missing item ID' });
+            return;
+        }
+        if (name === undefined && category === undefined)
+        {
+            res.status(400).json({ error: 'Data not found' });
+            return;
+        }
+
+        const item: Item = await prisma.item.update({
             where: { itemId: Number(id) },
             data: {
                 name,
@@ -88,6 +123,11 @@ const updateItem = async (req: Request, res: Response) : Promise<void> => {
  */
 const deleteItem = async (req: Request, res: Response) : Promise<void> => {
     const { id } = req.params;
+    if (id === undefined)
+    {
+        res.status(400).json({ error: 'Missing item ID' });
+        return;
+    }
     try {
         await prisma.item.delete({ where: { itemId: Number(id) } });
         res.json({ message: 'Item deleted successfully' });
@@ -96,21 +136,9 @@ const deleteItem = async (req: Request, res: Response) : Promise<void> => {
     }
 };
 
-/**
- * Interface for the Item Controller, which defines the methods for handling Item-related requests.
- */
-export interface ItemController {
-    createItem: (req: Request, res: Response) => Promise<void>;
-    getItems: (req: Request, res: Response) => Promise<void>;
-    getItemById: (req: Request, res: Response) => Promise<void>;
-    updateItem: (req: Request, res: Response) => Promise<void>;
-    deleteItem: (req: Request, res: Response) => Promise<void>;
-}
-
 export const itemController: ItemController = {
     createItem,
     getItems,
-    getItemById,
     updateItem,
     deleteItem
 }
