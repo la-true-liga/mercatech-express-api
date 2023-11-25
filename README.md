@@ -44,4 +44,4 @@ This command will launch the server in ```localhost:4200```
 ## Basic structure and API documentation
 For an extend explanation of the RESTful API and its basic structure please consult the [wiki](https://github.com/la-true-liga/mercatech-express-api/wiki)
 
-Made by @42Alberto @AlexTrujillo2002 @ruzafa8 and @jdomingu98
+Made by [42Alberto](https://github.com/42Alberto) [AlexTrujillo2002](https://github.com/AlexTrujillo2002) [ruzafa8](https://github.com/ruzafa8) and [jdomingu98](https://github.com/jdomingu98)
