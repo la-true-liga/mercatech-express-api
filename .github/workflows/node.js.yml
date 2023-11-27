@@ -13,6 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+      COMPOSE_FILE: docker-compose.test.yml
 
     strategy:
       matrix:
@@ -26,7 +29,21 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build --if-present
-    - run: npm test
+
+    - name: Install dependencies for CI
+      run: npm ci
+
+    - name: Verify linting code
+      run: npm run lint
+
+    - name: build
+      run: npm run build --if-present
+
+    - name: Build docker image for Test
+      run: docker-compose -f docker-compose.test.yml up -d
+    
+    - name: Apply migrations for DB
+      run: docker-compose -f docker-compose.test.yml run --rm server npm run prisma-migrate
+
+    - name: Run tests
+      run: docker-compose -f docker-compose.test.yml run --rm server npm run test
